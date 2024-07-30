@@ -3,6 +3,14 @@ from . import views
 
 
 urlpatterns = [
-    path("cart", views.GetCartAPIView.as_view(), name="get-cart"),
-    path("cart", views.CreateCartAPIView.as_view(), name="create-cart"),
+    path(
+        "cart",
+        views.ListCreateCartAPIView.as_view(),
+        name="list-create-cart",
+    ),
+    path(
+        "cart/<int:pk>",
+        views.UpdateDeleteCartAPIView.as_view(),
+        name="update-delete-cart",
+    ),
 ]
