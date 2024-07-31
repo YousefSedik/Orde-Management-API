@@ -5,6 +5,7 @@ from api import serializers
 from rest_framework.response import Response
 from core.models import Cart, Order, OrderItem
 from rest_framework import status
+from rest_framework import serializers as rest_serializers
 
 # import generic views
 
@@ -57,3 +58,37 @@ class UpdateDeleteCartAPIView(GenericAPIView, DestroyModelMixin, UpdateModelMixi
 
     def patch(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
+
+
+class CreateOrderAPIView(CreateAPIView):
+    serializer_class = serializers.CreateOrderSerializer
+    queryset = Order.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except rest_serializers.ValidationError as e:
+            return Response(
+                {"error": f"Transaction failed: {e.detail}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Transaction failed: {e.detail}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class ListOrdersAPIView(ListAPIView):
+    serializer_class = serializers.RetrieveListOrderSerializer
+    queryset = Order.objects.all()
+
+
+class RetrieveOrderDetailsAPIView(RetrieveAPIView):
+    serializer_class = serializers.RetrieveListOrderSerializer
+    queryset = Order.objects.all()
+
+
+class RetrieveOrderAPIView(RetrieveAPIView):
+    serializer_class = serializers.RetrieveOrderSerializer
+    queryset = Order.objects.all()

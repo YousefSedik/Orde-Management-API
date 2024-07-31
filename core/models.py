@@ -24,18 +24,21 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     orderDate = models.DateTimeField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now_add=True)
+    total_price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     status = models.CharField(
         choices=ORDER_STATUS, default=ORDER_STATUS.PENDING, max_length=1
     )
 
     def __str__(self):
-        return f"{self.user.name} order at {self.orderDate} with status {self.status} "
+        return f"{self.user.full_name} order at {self.orderDate} with status {self.status} "
 
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    price = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
         return f"{self.product} from order number {self.order.id}"
