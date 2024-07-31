@@ -26,7 +26,7 @@ urlpatterns = [
     ),
     path(
         "order/<int:pk>",
-        views.RetrieveOrderAPIView.as_view(),
-        name="retrieve-order",
+        views.UpdateRetrieveOrderAPIView.as_view(),
+        name="retrieve-update-order",
     ),
 ]

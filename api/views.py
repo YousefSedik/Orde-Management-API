@@ -89,6 +89,18 @@ class RetrieveOrderDetailsAPIView(RetrieveAPIView):
     queryset = Order.objects.all()
 
 
-class RetrieveOrderAPIView(RetrieveAPIView):
-    serializer_class = serializers.RetrieveOrderSerializer
+class UpdateRetrieveOrderAPIView(GenericAPIView, RetrieveModelMixin, UpdateModelMixin):
     queryset = Order.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == "PATCH":
+            return serializers.UpdateOrderSerializer
+
+        elif self.request.method == "GET":
+            return serializers.RetrieveOrderSerializer
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)

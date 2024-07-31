@@ -97,3 +97,9 @@ class RetrieveOrderSerializer(ModelSerializer):
     class Meta:
         model = Order
         fields = ["id", "orderDate", "status", "total_price", "last_updated"]
+
+
+class UpdateOrderSerializer(ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ["id", "status"]
